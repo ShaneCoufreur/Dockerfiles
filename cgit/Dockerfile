@@ -1,8 +1,8 @@
-FROM alpine:3.8
+FROM alpine:3.23.4
 
-ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz /tmp/
+ADD https://github.com/just-containers/s6-overlay/releases/download/v3.2.3.0/s6-overlay-x86_64.tar.xz /tmp/
 
-RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / \
+RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz \
     && apk add  --no-cache --purge cgit git \
       openssh-server curl nginx fcgiwrap ca-certificates \
       py-pygments \
@@ -15,7 +15,7 @@ RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / \
       git \
     && passwd -u git \
     && ssh-keygen -A \
-    && mkdir /run/nginx \
+    && mkdir -p /run/nginx \
     && rm -rf /var/cache/apk/* /tmp/*
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
